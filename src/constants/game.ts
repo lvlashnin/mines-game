@@ -32,3 +32,9 @@ export const QUERY_KEYS = {
 } as const;
 
 export const PLAYER_ID = "serhiiId" as const;
+
+export const GAME_STATUS = {
+  ACTIVE: "active",
+  WON: "won",
+  LOST: "lost",
+} as const;

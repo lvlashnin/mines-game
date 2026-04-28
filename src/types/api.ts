@@ -1,4 +1,6 @@
-export type GameStatus = "active" | "won" | "lost";
+import { GAME_STATUS } from "../constants/game";
+
+export type GameStatus = (typeof GAME_STATUS)[keyof typeof GAME_STATUS];
 export type CellType = "gem" | "mine";
 export type MinesCount = 1 | 3 | 5 | 10 | 24;
 
