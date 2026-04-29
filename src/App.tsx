@@ -1,11 +1,5 @@
-import "./App.css";
-
 function App() {
-  return (
-    <>
-      <h1>hello mines game</h1>
-    </>
-  );
+  return <div className="p-8 font-mono text-sm"></div>;
 }
 
 export default App;

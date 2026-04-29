@@ -1,4 +1,4 @@
-import { MinesCount } from "../types";
+import type { MinesCount } from "../types";
 
 export const GAME_CONFIG = {
   GRID_ROWS: 5,
@@ -37,4 +37,11 @@ export const GAME_STATUS = {
   ACTIVE: "active",
   WON: "won",
   LOST: "lost",
+} as const;
+
+export const UI_CELL_STATE = {
+  HIDDEN: "hidden",
+  GEM: "gem",
+  MINE: "mine",
+  MINE_HIT: "mine-hit",
 } as const;

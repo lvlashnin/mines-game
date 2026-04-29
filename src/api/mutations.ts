@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "./client";
 import { API_ENDPOINTS } from "../constants/game";
-import { QUERY_KEYS } from "../constants/game";
+import { QUERY_KEYS, GAME_STATUS } from "../constants/game";
 import type {
   CreateGameRequest,
   CreateGameResponse,
@@ -44,7 +44,7 @@ export const useRevealCellMutation = () => {
       return data;
     },
     onSuccess: (data) => {
-      if (data.status === "lost") {
+      if (data.status === GAME_STATUS.LOST) {
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balance });
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.history });
       }

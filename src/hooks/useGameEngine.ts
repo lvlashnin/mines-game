@@ -6,16 +6,17 @@ import {
   useCashOutMutation,
 } from "../api/mutations";
 import { GAME_STATUS } from "../constants/game";
+import type { UseGameEngineReturn } from "../types";
 
-export const useGameEngine = () => {
+export const useGameEngine = (): UseGameEngineReturn => {
   const betAmount = useGameStore((state) => state.betAmount);
   const minesCount = useGameStore((state) => state.minesCount);
 
   const { data: activeGame, isLoading: isGameLoading } = useActiveGameQuery();
-
   const createGame = useCreateGameMutation();
   const revealCell = useRevealCellMutation();
   const cashOut = useCashOutMutation();
+
   const isIdle = !activeGame && !createGame.isPending;
   const isActive = activeGame?.status === GAME_STATUS.ACTIVE;
   const isGameOver =

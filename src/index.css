@@ -1,10 +1,20 @@
-/* src/index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {  
+  --color-game-bg: #0f111a;       
+  --color-game-panel: #161925;    
+  --color-game-cell: #1f2331; 
+  --color-game-cell-hover: #2a2f42; 
+  --color-game-input: #0a0c13;    
+  --color-game-button: #10b981;   
+  --color-game-button-hover: #059669; 
+  --color-game-gem: #10b981;     
+  --color-game-mine: #ef4444;    
+  --color-game-gold: #fbbf24;     
+}
 
 @layer base {
   body {
-    @apply bg-game-bg text-gray-300 font-sans antialiased;
+    @apply bg-game-bg text-gray-300 font-sans antialiased min-h-screen flex items-center justify-center;
   }
 }

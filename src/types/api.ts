@@ -87,3 +87,22 @@ export interface CashoutResponse {
   fullBoard: FullBoard;
   balance: number;
 }
+
+export interface UseGameEngineReturn {
+  gameState: GameStateResponse | null | undefined;
+  flags: {
+    isIdle: boolean;
+    isActive: boolean;
+    isGameOver: boolean;
+    isProcessing: boolean;
+  };
+  metrics: {
+    potentialProfit: number;
+    currentWinAmount: number;
+  };
+  actions: {
+    handleStartGame: () => void;
+    handleReveal: (row: number, col: number) => void;
+    handleCashOut: () => void;
+  };
+}
