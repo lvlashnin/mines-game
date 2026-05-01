@@ -19,3 +19,16 @@ export const PANEL_TEXTS = {
     GEMS: "Gems Found",
   },
 } as const;
+
+export const UI_LABELS = {
+  HISTORY: {
+    TITLE: "RECENT GAMES",
+    STATUS_WIN: "WIN",
+    STATUS_BUST: "BUST",
+  },
+} as const;
+
+export const HISTORY_OUTCOME = {
+  WIN: "win",
+  BUST: "bust",
+} as const;

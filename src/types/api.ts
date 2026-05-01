@@ -20,7 +20,7 @@ export interface BalanceResponse {
   balance: number;
 }
 
-export interface HistoryGame {
+export interface HistoryGameItem {
   gameId: string;
   betAmount: number;
   minesCount: number;
@@ -32,7 +32,7 @@ export interface HistoryGame {
 }
 
 export interface HistoryResponse {
-  games: HistoryGame[];
+  games: HistoryGameItem[];
 }
 
 export interface GameStateResponse {

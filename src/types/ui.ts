@@ -1,4 +1,5 @@
 import { UI_CELL_STATE } from "../constants/game";
+import { HISTORY_OUTCOME } from "../constants/ui";
 
 export type UICellState = (typeof UI_CELL_STATE)[keyof typeof UI_CELL_STATE];
 
@@ -15,4 +16,15 @@ export interface ControlPanelProps {
   potentialProfit: number;
   onStart: () => void;
   onCashOut: () => void;
+}
+
+export type HistoryOutcome =
+  (typeof HISTORY_OUTCOME)[keyof typeof HISTORY_OUTCOME];
+
+export interface GameHistoryItem {
+  id: string;
+  betAmount: number;
+  outcome: HistoryOutcome;
+  profit: number;
+  multiplier?: number;
 }

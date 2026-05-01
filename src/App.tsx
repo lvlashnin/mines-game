@@ -1,13 +1,16 @@
 import { useGameEngine } from "./hooks/useGameEngine";
-import { useBalanceQuery } from "./api/queries";
+import { useBalanceQuery, useHistoryQuery } from "./api/queries";
 import { useGameStore } from "./store/useGameStore";
 import { Board } from "./components/game/Board";
 import { ControlPanel } from "./components/game/ControlPanel";
 import { useShallow } from "zustand/shallow";
+import { GameHistory } from "./components/game/GameHistory";
 
 function App() {
   const { gameState, flags, metrics, actions } = useGameEngine();
+
   const { data: balanceData, isLoading: isBalanceLoading } = useBalanceQuery();
+  const { data: historyData, isLoading: isHistoryLoading } = useHistoryQuery();
 
   const { betAmount, setBetAmount, minesCount, setMinesCount } = useGameStore(
     useShallow((state) => ({
@@ -33,7 +36,6 @@ function App() {
           onStart={actions.handleStartGame}
           onCashOut={actions.handleCashOut}
         />
-
         <div className="flex-1 w-full flex justify-center items-center">
           <Board
             gameState={gameState}
@@ -42,6 +44,7 @@ function App() {
             onCellClick={actions.handleReveal}
           />
         </div>
+        <GameHistory history={historyData} isLoading={isHistoryLoading} />
       </div>
     </div>
   );

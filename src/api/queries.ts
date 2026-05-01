@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { apiClient } from "./client";
-import { API_ENDPOINTS, QUERY_KEYS } from "../constants/game";
+import { API_ENDPOINTS, GAME_STATUS, QUERY_KEYS } from "../constants/game";
 import type {
   BalanceResponse,
+  GameHistoryItem,
   GameStateResponse,
   HistoryResponse,
 } from "../types";
+import { HISTORY_OUTCOME } from "../constants";
 
 export const useBalanceQuery = () => {
   return useQuery({
@@ -27,7 +29,22 @@ export const useHistoryQuery = () => {
       const { data } = await apiClient.get<HistoryResponse>(
         API_ENDPOINTS.HISTORY,
       );
-      return data;
+      const finishedGames = data.games.filter(
+        (game) => game.status !== GAME_STATUS.ACTIVE,
+      );
+
+      const uiData: GameHistoryItem[] = finishedGames.map((serverItem) => {
+        const isWin = serverItem.status === GAME_STATUS.WON;
+
+        return {
+          id: serverItem.gameId,
+          betAmount: serverItem.betAmount,
+          outcome: isWin ? HISTORY_OUTCOME.WIN : HISTORY_OUTCOME.BUST,
+          profit: serverItem.profit || serverItem.betAmount * -1,
+          multiplier: serverItem.multiplier || undefined,
+        };
+      });
+      return uiData;
     },
   });
 };
