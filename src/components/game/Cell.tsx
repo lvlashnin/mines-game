@@ -31,7 +31,7 @@ export const Cell = (props: CellProps) => {
       >
         <div
           className={cn(
-            "transition-all duration-300 transform flex items-center justify-center w-1/2 h-1/2",
+            "transition-all  transform flex items-center justify-center w-1/2 h-1/2",
             state === UI_CELL_STATE.HIDDEN
               ? "scale-0 opacity-0"
               : "scale-100 opacity-100",
@@ -46,7 +46,7 @@ export const Cell = (props: CellProps) => {
             />
           )}
 
-          <span className="absolute text-2xl sm:text-4xl pointer-events-none -z-10">
+          <span className="absolute text-2xl sm:text-4xl pointer-events-none">
             {state === UI_CELL_STATE.GEM && "💎"}
             {(state === UI_CELL_STATE.MINE ||
               state === UI_CELL_STATE.MINE_HIT) &&

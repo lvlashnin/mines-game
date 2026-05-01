@@ -44,6 +44,9 @@ export interface GameStateResponse {
   revealedCells: RevealedCell[];
   gemsFound: number;
   nextMultiplier: number | null;
+  result?: "gem" | "mine";
+  revealedCell?: RevealedCell;
+  fullBoard?: FullBoard;
 }
 
 export interface CreateGameRequest {

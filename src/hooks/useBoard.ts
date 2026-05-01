@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { GameStateResponse, UICellState } from "../types";
-import { GAME_CONFIG, UI_CELL_STATE } from "../constants/game";
+import { GAME_CONFIG, GAME_STATUS, UI_CELL_STATE } from "../constants/game";
 
 export const useBoard = (gameState?: GameStateResponse | null) => {
   const grid = useMemo(() => {
@@ -9,12 +9,38 @@ export const useBoard = (gameState?: GameStateResponse | null) => {
       () => Array(GAME_CONFIG.GRID_COLS).fill(UI_CELL_STATE.HIDDEN),
     );
 
-    if (gameState?.revealedCells) {
-      gameState.revealedCells.forEach((cell) => {
-        const uiState: UICellState =
-          cell.type === "gem" ? UI_CELL_STATE.GEM : UI_CELL_STATE.MINE_HIT;
+    if (!gameState) return newGrid;
 
-        newGrid[cell.row][cell.col] = uiState;
+    if (
+      (gameState.status === GAME_STATUS.LOST ||
+        gameState.status === GAME_STATUS.WON) &&
+      gameState.fullBoard
+    ) {
+      for (let r = 0; r < GAME_CONFIG.GRID_ROWS; r++) {
+        for (let c = 0; c < GAME_CONFIG.GRID_COLS; c++) {
+          const serverCell = gameState.fullBoard[r][c];
+
+          if (serverCell === UI_CELL_STATE.MINE) {
+            const isFatalHit =
+              gameState.status === GAME_STATUS.LOST &&
+              gameState.revealedCell?.row === r &&
+              gameState.revealedCell?.col === c;
+
+            newGrid[r][c] = isFatalHit
+              ? UI_CELL_STATE.MINE_HIT
+              : UI_CELL_STATE.MINE;
+          } else if (serverCell === UI_CELL_STATE.GEM) {
+            newGrid[r][c] = UI_CELL_STATE.GEM;
+          }
+        }
+      }
+    } else if (gameState.revealedCells) {
+      gameState.revealedCells.forEach((cell) => {
+        if (cell.type === UI_CELL_STATE.GEM) {
+          newGrid[cell.row][cell.col] = UI_CELL_STATE.GEM;
+        } else if (cell.type === UI_CELL_STATE.MINE) {
+          newGrid[cell.row][cell.col] = UI_CELL_STATE.MINE_HIT;
+        }
       });
     }
 

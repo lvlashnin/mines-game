@@ -17,7 +17,9 @@ export const useGameEngine = (): UseGameEngineReturn => {
   const revealCell = useRevealCellMutation();
   const cashOut = useCashOutMutation();
 
-  const isIdle = !activeGame && !createGame.isPending;
+  const isIdle =
+    (!activeGame || activeGame.status !== GAME_STATUS.ACTIVE) &&
+    !createGame.isPending;
   const isActive = activeGame?.status === GAME_STATUS.ACTIVE;
   const isGameOver =
     activeGame?.status === GAME_STATUS.WON ||

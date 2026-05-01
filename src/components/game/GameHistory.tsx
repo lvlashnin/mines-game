@@ -19,7 +19,7 @@ export const GameHistory = ({ history, isLoading }: GameHistoryProps) => {
           history.map((item) => <HistoryCard key={item.id} item={item} />)
         ) : (
           <div className="text-gray-500 text-sm text-center mt-10">
-            No games played yet.
+            No games played yet...
           </div>
         )}
       </div>

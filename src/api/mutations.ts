@@ -8,6 +8,7 @@ import type {
   RevealRequest,
   RevealResponse,
   CashoutResponse,
+  GameStateResponse,
 } from "../types";
 
 export const useCreateGameMutation = () => {
@@ -44,11 +45,20 @@ export const useRevealCellMutation = () => {
       return data;
     },
     onSuccess: (data) => {
+      queryClient.setQueryData<GameStateResponse | undefined>(
+        QUERY_KEYS.activeGame,
+        (oldState) => {
+          if (!oldState) return undefined;
+          return {
+            ...oldState,
+            ...data,
+          };
+        },
+      );
       if (data.status === GAME_STATUS.LOST) {
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balance });
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.history });
       }
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.activeGame });
     },
   });
 };
