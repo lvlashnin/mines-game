@@ -11,7 +11,10 @@
   --color-game-button-hover: #059669; 
   --color-game-gem: #10b981;     
   --color-game-mine: #ef4444;    
-  --color-game-gold: #fbbf24;     
+  --color-game-gold: #fbbf24; 
+  --color-game-button-cashout: #3b82f6;
+  --color-game-button-cashout-hover: #2563eb;
+  --color-game-stats-text: #9ca3af;    
 }
 
 @layer base {

@@ -1,7 +1,7 @@
-import type { CellProps } from "../types";
-import { cn } from "../utils/cn";
-import { useCell } from "../hooks/useCell";
-import { UI_CELL_STATE } from "../constants/game";
+import type { CellProps } from "../../types";
+import { cn } from "../../utils/cn";
+import { useCell } from "../../hooks/useCell";
+import { UI_CELL_STATE } from "../../constants/game";
 
 export const Cell = (props: CellProps) => {
   const { state, onClick } = props;

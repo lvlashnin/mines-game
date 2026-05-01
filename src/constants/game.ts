@@ -9,6 +9,7 @@ export const GAME_CONFIG = {
   MAX_BET: 10000,
   AVAILABLE_MINES: [1, 3, 5, 10, 24] as readonly MinesCount[],
   DEFAULT_MINES: 5 as MinesCount,
+  GRID_SIZE: 25,
 } as const;
 
 export const UI_CONFIG = {

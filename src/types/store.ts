@@ -10,6 +10,10 @@ export interface GameActions {
   setBetAmount: (amount: number) => void;
   setMinesCount: (count: MinesCount) => void;
   toggleMute: () => void;
+  resetControls: () => void;
+  halfBet: () => void;
+  doubleBet: (currentBalance: number) => void;
+  maxBet: (currentBalance: number) => void;
 }
 
 export type GameStore = GameState & GameActions;
