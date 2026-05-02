@@ -14,7 +14,7 @@ export const GameHistory = ({ history, isLoading }: GameHistoryProps) => {
         {UI_LABELS.HISTORY.TITLE}
       </h2>
 
-      <div className="flex-1 overflow-y-auto pr-2 flex flex-col gap-3 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto pr-2 flex flex-col gap-3 overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {history?.length > 0 ? (
           history.map((item) => <HistoryCard key={item.id} item={item} />)
         ) : (

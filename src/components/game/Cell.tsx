@@ -23,7 +23,7 @@ export const Cell = (props: CellProps) => {
           state === UI_CELL_STATE.HIDDEN &&
             isDisabled &&
             "opacity-80 cursor-default",
-          state === UI_CELL_STATE.GEM && "bg-game-cell/50 scale-95 opacity-100",
+          state === UI_CELL_STATE.GEM && "bg-game-gem scale-95 opacity-100",
           state === UI_CELL_STATE.MINE && "bg-game-cell/50 scale-95 opacity-50",
           state === UI_CELL_STATE.MINE_HIT &&
             "bg-game-mine scale-95 shadow-[0_0_15px_rgba(239,68,68,0.5)]",

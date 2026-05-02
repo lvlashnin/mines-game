@@ -4,9 +4,11 @@ import {
   useCreateGameMutation,
   useRevealCellMutation,
   useCashOutMutation,
+  useResetGame,
 } from "../api/mutations";
 import { GAME_STATUS } from "../constants/game";
 import type { UseGameEngineReturn } from "../types";
+import { useIsMutating } from "@tanstack/react-query";
 
 export const useGameEngine = (): UseGameEngineReturn => {
   const betAmount = useGameStore((state) => state.betAmount);
@@ -16,29 +18,39 @@ export const useGameEngine = (): UseGameEngineReturn => {
   const createGame = useCreateGameMutation();
   const revealCell = useRevealCellMutation();
   const cashOut = useCashOutMutation();
+  const resetGame = useResetGame();
 
-  const isIdle =
-    (!activeGame || activeGame.status !== GAME_STATUS.ACTIVE) &&
-    !createGame.isPending;
+  const isCreating = useIsMutating({ mutationKey: ["createGame"] }) > 0;
+  const isRevealing = useIsMutating({ mutationKey: ["revealCell"] }) > 0;
+  const isCashingOut = useIsMutating({ mutationKey: ["cashOut"] }) > 0;
+
+  const currentMultiplier = activeGame?.currentMultiplier ?? 0;
+
+  const isIdle = !activeGame && !isCreating;
+
   const isActive = activeGame?.status === GAME_STATUS.ACTIVE;
+
   const isGameOver =
     activeGame?.status === GAME_STATUS.WON ||
     activeGame?.status === GAME_STATUS.LOST;
-  const isProcessing =
-    createGame.isPending ||
-    revealCell.isPending ||
-    cashOut.isPending ||
-    isGameLoading;
 
-  const potentialProfit = isActive
-    ? activeGame.betAmount * activeGame.currentMultiplier - activeGame.betAmount
-    : 0;
+  const isProcessing = isCreating || isRevealing || isCashingOut;
 
-  const currentWinAmount = isActive
-    ? activeGame.betAmount * activeGame.currentMultiplier
-    : 0;
+  const isWinOrActive = isActive || activeGame?.status === GAME_STATUS.WON;
+
+  const potentialProfit =
+    isWinOrActive && activeGame
+      ? activeGame.betAmount * activeGame.currentMultiplier -
+        activeGame.betAmount
+      : 0;
+
+  const currentWinAmount =
+    isWinOrActive && activeGame
+      ? activeGame.betAmount * activeGame.currentMultiplier
+      : 0;
 
   const handleStartGame = () => {
+    if (!isIdle) return;
     if (isActive || isProcessing) return;
 
     createGame.mutate({ betAmount, minesCount });
@@ -69,15 +81,18 @@ export const useGameEngine = (): UseGameEngineReturn => {
       isActive,
       isGameOver,
       isProcessing,
+      isInitialLoading: isGameLoading,
     },
     metrics: {
       potentialProfit,
       currentWinAmount,
+      currentMultiplier,
     },
     actions: {
       handleStartGame,
       handleReveal,
       handleCashOut,
+      handleReset: resetGame,
     },
   };
 };

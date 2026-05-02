@@ -15,24 +15,26 @@ export const useCreateGameMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: ["createGame"],
     mutationFn: async (payload: CreateGameRequest) => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
       const { data } = await apiClient.post<CreateGameResponse>(
         API_ENDPOINTS.GAMES,
         payload,
       );
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(QUERY_KEYS.activeGame, data);
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balance });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.activeGame });
     },
   });
 };
 
 export const useRevealCellMutation = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
+    mutationKey: ["revealCell"],
     mutationFn: async ({
       gameId,
       row,
@@ -65,18 +67,29 @@ export const useRevealCellMutation = () => {
 
 export const useCashOutMutation = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
+    mutationKey: ["cashOut"],
     mutationFn: async ({ gameId }: { gameId: string }) => {
       const { data } = await apiClient.post<CashoutResponse>(
         `${API_ENDPOINTS.GAMES}/${gameId}/cashout`,
       );
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(QUERY_KEYS.activeGame, (oldState) => ({
+        ...oldState,
+        ...data,
+      }));
+
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balance });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.history });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.activeGame });
     },
   });
+};
+
+export const useResetGame = () => {
+  const queryClient = useQueryClient();
+  return () => {
+    queryClient.setQueryData(QUERY_KEYS.activeGame, null);
+  };
 };

@@ -1,50 +1,30 @@
-import type { GameStateResponse } from "../../types";
+import { useId } from "react";
+import { useGameEngine } from "../../hooks/useGameEngine";
+import { useGameStore } from "../../store/useGameStore";
+import { useBalanceQuery } from "../../api/queries";
 import { cn } from "../../utils/cn";
 import { BetInput } from "../ui/BetInput";
 import { GameButton } from "../ui/GameButton";
 import { GAME_CONFIG } from "../../constants/game";
-import { PANEL_TEXTS } from "../../constants/ui"; // Наши новые константы
-import { useId } from "react";
+import { PANEL_TEXTS } from "../../constants/ui";
 import { StatRow } from "../ui/StatRow";
 
-interface ControlPanelProps {
-  flags: {
-    isIdle: boolean;
-    isActive: boolean;
-    isProcessing: boolean;
-  };
-  metrics: {
-    potentialProfit: number;
-    currentWinAmount: number;
-  };
-  gameState?: GameStateResponse | null;
-  balance: number;
-  betAmount: number;
-  setBetAmount: (amount: number) => void;
-  minesCount: number;
-  setMinesCount: (count: number) => void;
-  onStart: () => void;
-  onCashOut: () => void;
-}
+export const ControlPanel = () => {
+  const { gameState, flags, metrics, actions } = useGameEngine();
 
-export const ControlPanel = ({
-  flags,
-  metrics,
-  gameState,
-  balance,
-  betAmount,
-  setBetAmount,
-  minesCount,
-  setMinesCount,
-  onStart,
-  onCashOut,
-}: ControlPanelProps) => {
+  const betAmount = useGameStore((state) => state.betAmount);
+  const setBetAmount = useGameStore((state) => state.setBetAmount);
+  const minesCount = useGameStore((state) => state.minesCount);
+  const setMinesCount = useGameStore((state) => state.setMinesCount);
+
+  const { data: balanceData } = useBalanceQuery();
+  const balance = balanceData?.balance || 0;
+
   const { isIdle, isActive, isProcessing } = flags;
-  const isDisabled = !isIdle || isProcessing;
   const minesLabelId = useId();
 
-  const totalPayout = betAmount + metrics.potentialProfit;
-  const currentMultiplier = gameState?.currentMultiplier?.toFixed(2) || "1.00";
+  const isDisabled = !isIdle || isProcessing;
+
   const gemsRemaining = GAME_CONFIG.GRID_SIZE - minesCount;
 
   return (
@@ -90,17 +70,17 @@ export const ControlPanel = ({
       {isActive ? (
         <GameButton
           variant="success"
-          onClick={onCashOut}
+          onClick={actions.handleCashOut}
           disabled={isProcessing || gameState?.gemsFound === 0}
           className="w-full py-4"
         >
-          {PANEL_TEXTS.CASH_OUT} — ${totalPayout.toFixed(2)}
+          {PANEL_TEXTS.CASH_OUT} — ${metrics.currentWinAmount.toFixed(2)}
         </GameButton>
       ) : (
         <GameButton
           variant="primary"
-          onClick={onStart}
-          disabled={isProcessing || betAmount <= 0}
+          onClick={actions.handleStartGame}
+          disabled={!isIdle || isProcessing || betAmount <= 0}
           className="w-full py-4"
         >
           {PANEL_TEXTS.START_GAME}
@@ -111,7 +91,7 @@ export const ControlPanel = ({
         <div className="flex flex-col gap-3 py-4 border-b border-t border-game-border mt-2 font-mono text-sm">
           <StatRow
             label={PANEL_TEXTS.STATS.MULTIPLIER}
-            value={`${currentMultiplier}×`}
+            value={`${metrics.currentMultiplier.toFixed(2)}×`}
             valueClass="text-game-button"
           />
           <StatRow

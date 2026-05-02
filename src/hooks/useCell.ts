@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { CellProps } from "../types";
 import { UI_CELL_STATE } from "../constants/game";
-import { ASSETS } from "../constants/assets";
+import { ASSETS } from "../constants";
 
 export const useCell = ({
   state,

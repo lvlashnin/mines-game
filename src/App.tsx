@@ -1,52 +1,38 @@
-import { useGameEngine } from "./hooks/useGameEngine";
-import { useBalanceQuery, useHistoryQuery } from "./api/queries";
-import { useGameStore } from "./store/useGameStore";
+import { AnimatePresence } from "framer-motion";
+import {
+  useActiveGameQuery,
+  useBalanceQuery,
+  useHistoryQuery,
+} from "./api/queries";
 import { Board } from "./components/game/Board";
 import { ControlPanel } from "./components/game/ControlPanel";
-import { useShallow } from "zustand/shallow";
 import { GameHistory } from "./components/game/GameHistory";
+import { InitialLoader } from "./components/ui/InitialLoader";
 
 function App() {
-  const { gameState, flags, metrics, actions } = useGameEngine();
-
-  const { data: balanceData, isLoading: isBalanceLoading } = useBalanceQuery();
   const { data: historyData, isLoading: isHistoryLoading } = useHistoryQuery();
-
-  const { betAmount, setBetAmount, minesCount, setMinesCount } = useGameStore(
-    useShallow((state) => ({
-      betAmount: state.betAmount,
-      setBetAmount: state.setBetAmount,
-      minesCount: state.minesCount,
-      setMinesCount: state.setMinesCount,
-    })),
-  );
+  const { isLoading: isBalanceLoading } = useBalanceQuery();
+  const { isLoading: isGameLoading } = useActiveGameQuery();
+  const isAppLoading = isHistoryLoading || isBalanceLoading || isGameLoading;
 
   return (
-    <div className="min-h-screen w-full bg-game-bg p-4 md:p-8 flex items-center justify-center">
-      <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
-        <ControlPanel
-          flags={flags}
-          metrics={metrics}
-          gameState={gameState}
-          balance={balanceData?.balance || 0}
-          betAmount={betAmount}
-          setBetAmount={setBetAmount}
-          minesCount={minesCount}
-          setMinesCount={setMinesCount}
-          onStart={actions.handleStartGame}
-          onCashOut={actions.handleCashOut}
-        />
-        <div className="flex-1 w-full flex justify-center items-center">
-          <Board
-            gameState={gameState}
-            isInteractive={flags.isActive}
-            isProcessing={flags.isProcessing}
-            onCellClick={actions.handleReveal}
-          />
+    <>
+      <AnimatePresence>
+        {isAppLoading && <InitialLoader key="initial-loader" />}
+      </AnimatePresence>
+
+      <div className="min-h-screen w-full bg-game-bg p-4 md:p-8 flex items-center justify-center">
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
+          <ControlPanel />
+
+          <div className="flex-1 w-full flex justify-center items-center">
+            <Board />
+          </div>
+
+          <GameHistory history={historyData} isLoading={isHistoryLoading} />
         </div>
-        <GameHistory history={historyData} isLoading={isHistoryLoading} />
       </div>
-    </div>
+    </>
   );
 }
 

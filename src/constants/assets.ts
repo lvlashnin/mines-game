@@ -1,6 +1,6 @@
 export const ASSETS = {
   ICONS: {
-    GEM: "/icons/gem.svg",
-    MINE: "/icons/mine.svg",
+    GEM: "/icons/gem.png",
+    MINE: "/icons/mine.png",
   },
 } as const;

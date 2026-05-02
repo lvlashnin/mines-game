@@ -10,14 +10,6 @@ export interface CellProps {
   onClick: () => void;
 }
 
-export interface ControlPanelProps {
-  isDisabled: boolean;
-  isProcessing: boolean;
-  potentialProfit: number;
-  onStart: () => void;
-  onCashOut: () => void;
-}
-
 export type HistoryOutcome =
   (typeof HISTORY_OUTCOME)[keyof typeof HISTORY_OUTCOME];
 

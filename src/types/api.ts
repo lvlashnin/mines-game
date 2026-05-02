@@ -3,6 +3,7 @@ import { GAME_STATUS } from "../constants/game";
 export type GameStatus = (typeof GAME_STATUS)[keyof typeof GAME_STATUS];
 export type CellType = "gem" | "mine";
 export type MinesCount = 1 | 3 | 5 | 10 | 24;
+export type UIState = "idle" | "starting" | "active" | "game_over";
 
 export interface ApiError {
   error: string;
@@ -64,17 +65,17 @@ export interface RevealRequest {
 }
 
 export interface RevealGemResponse {
-  result: "gem";
+  result: string;
   currentMultiplier: number;
   revealedCells: RevealedCell[];
-  status: "active";
+  status: string;
   gemsFound: number;
   nextMultiplier: number | null;
 }
 
 export interface RevealMineResponse {
-  result: "mine";
-  status: "lost";
+  result: string;
+  status: string;
   revealedCell: RevealedCell;
   fullBoard: FullBoard;
   balance: number;
@@ -83,7 +84,7 @@ export interface RevealMineResponse {
 export type RevealResponse = RevealGemResponse | RevealMineResponse;
 
 export interface CashoutResponse {
-  status: "won";
+  status: string;
   cashedOutMultiplier: number;
   winAmount: number;
   profit: number;
@@ -98,14 +99,17 @@ export interface UseGameEngineReturn {
     isActive: boolean;
     isGameOver: boolean;
     isProcessing: boolean;
+    isInitialLoading: boolean;
   };
   metrics: {
     potentialProfit: number;
     currentWinAmount: number;
+    currentMultiplier: number;
   };
   actions: {
     handleStartGame: () => void;
     handleReveal: (row: number, col: number) => void;
     handleCashOut: () => void;
+    handleReset: () => void;
   };
 }
