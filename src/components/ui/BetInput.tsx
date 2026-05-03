@@ -59,7 +59,7 @@ export const BetInput = ({
         <span className="text-gray-500 font-mono">$</span>
       </div>
 
-      <div className="hidden sm:grid lg:hidden grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2 lg:hidden">
         {PANEL_TEXTS.QUICK_BET_AMOUNTS.map((amt) => (
           <GameButton
             key={amt}
