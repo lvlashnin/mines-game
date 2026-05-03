@@ -1,23 +1,15 @@
 import { Cell } from "../ui/Cell";
 import { useBoard } from "../../hooks/useBoard";
-import { useGameEngine } from "../../hooks/useGameEngine";
 import { GAME_STATUS } from "../../constants/game";
 import { AnimatePresence, motion } from "framer-motion";
 import { LoadingOverlay } from "../ui/LoadingOverlay";
 import { GameEndOverlay } from "../ui/GameEndOverlay";
 
 export const Board = () => {
-  const { gameState, flags, actions, metrics } = useGameEngine();
-  const { grid } = useBoard(gameState);
+  const { gameState, flags, actions, metrics, grid } = useBoard();
 
-  const { isActive, isProcessing, isGameOver } = flags;
-
+  const { isActive, isProcessing, isGameOver, isStarting } = flags;
   const { potentialProfit, currentWinAmount, currentMultiplier } = metrics;
-
-  const isStarting =
-    isProcessing && (!gameState || gameState.status !== GAME_STATUS.ACTIVE);
-
-  console.log("isStarting flag:", isStarting);
 
   return (
     <div className="relative w-full mx-auto p-3 sm:p-6 rounded-2xl shadow-xl bg-game-panel/50">
@@ -65,7 +57,7 @@ export const Board = () => {
               state={cellState}
               isInteractive={isActive}
               isProcessing={isProcessing}
-              onClick={() => actions.handleReveal(rowIndex, colIndex)}
+              onClick={() => actions.handleCellClick(rowIndex, colIndex)}
             />
           )),
         )}

@@ -9,6 +9,7 @@ import { ControlPanel } from "./components/game/ControlPanel";
 import { GameHistory } from "./components/game/GameHistory";
 import { MobileGameButton } from "./components/game/MobileGameButton";
 import { InitialLoader } from "./components/ui/InitialLoader";
+import { SoundToggle } from "./components/ui/SoundToggle";
 
 function App() {
   const { data: historyData, isLoading: isHistoryLoading } = useHistoryQuery();
@@ -21,6 +22,8 @@ function App() {
       <AnimatePresence>
         {isAppLoading && <InitialLoader key="initial-loader" />}
       </AnimatePresence>
+
+      <SoundToggle />
 
       <div className="min-h-screen w-full bg-game-bg p-4 md:p-8 flex items-center justify-center">
         <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-8 xl:gap-16 items-center lg:items-start justify-center relative">

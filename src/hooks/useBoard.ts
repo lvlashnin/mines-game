@@ -1,8 +1,28 @@
-import { useMemo } from "react";
-import type { GameStateResponse, UICellState } from "../types";
+import { useEffect, useMemo } from "react";
+import type { UICellState } from "../types";
 import { GAME_CONFIG, GAME_STATUS, UI_CELL_STATE } from "../constants/game";
+import { useGameEngine } from "./useGameEngine";
+import { useGameSounds } from "./useGameSounds";
 
-export const useBoard = (gameState?: GameStateResponse | null) => {
+export const useBoard = () => {
+  const { gameState, flags, actions, metrics } = useGameEngine();
+  const { playWin, playLose, playClick } = useGameSounds();
+
+  const { isProcessing, isGameOver } = flags;
+
+  useEffect(() => {
+    if (isGameOver && gameState) {
+      if (gameState.status === GAME_STATUS.WON) {
+        playWin();
+      } else if (gameState.status === GAME_STATUS.LOST) {
+        playLose();
+      }
+    }
+  }, [isGameOver, gameState?.status, playWin, playLose]);
+
+  const isStarting =
+    isProcessing && (!gameState || gameState.status !== GAME_STATUS.ACTIVE);
+
   const grid = useMemo(() => {
     const newGrid: UICellState[][] = Array.from(
       { length: GAME_CONFIG.GRID_ROWS },
@@ -47,5 +67,22 @@ export const useBoard = (gameState?: GameStateResponse | null) => {
     return newGrid;
   }, [gameState]);
 
-  return { grid };
+  const handleCellClick = (rowIndex: number, colIndex: number) => {
+    playClick();
+    actions.handleReveal(rowIndex, colIndex);
+  };
+
+  return {
+    gameState,
+    flags: {
+      ...flags,
+      isStarting,
+    },
+    actions: {
+      ...actions,
+      handleCellClick,
+    },
+    metrics,
+    grid,
+  };
 };
