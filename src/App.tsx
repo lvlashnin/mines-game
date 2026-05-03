@@ -22,14 +22,18 @@ function App() {
       </AnimatePresence>
 
       <div className="min-h-screen w-full bg-game-bg p-4 md:p-8 flex items-center justify-center">
-        <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:items-start justify-center">
-          <ControlPanel />
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-8 xl:gap-16 items-center lg:items-start justify-center">
+          <div className="w-full lg:flex-1 order-2 lg:order-1">
+            <ControlPanel />
+          </div>
 
-          <div className="flex-1 w-full flex justify-center items-center">
+          <div className="flex-2 w-full flex justify-center items-center order-3 lg:order-2">
             <Board />
           </div>
 
-          <GameHistory history={historyData} isLoading={isHistoryLoading} />
+          <div className="w-full lg:flex-1 order-1 lg:order-3">
+            <GameHistory history={historyData} isLoading={isHistoryLoading} />
+          </div>
         </div>
       </div>
     </>

@@ -20,7 +20,7 @@ export const Board = () => {
   console.log("isStarting flag:", isStarting);
 
   return (
-    <div className="relative w-full max-w-135 mx-auto p-3 sm:p-6 rounded-2xl shadow-xl">
+    <div className="relative w-full mx-auto p-3 sm:p-6 rounded-2xl shadow-xl bg-game-panel/50">
       <AnimatePresence>
         {isStarting && (
           <motion.div
@@ -57,7 +57,7 @@ export const Board = () => {
         )}
       </AnimatePresence>
 
-      <div className="md:w-[420px] grid grid-cols-5 grid-rows-5 gap-2 sm:gap-3 w-full">
+      <div className="w-full grid grid-cols-5 grid-rows-5 gap-2 sm:gap-3">
         {grid.map((row, rowIndex) =>
           row.map((cellState, colIndex) => (
             <Cell
