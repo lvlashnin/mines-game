@@ -28,7 +28,7 @@ export const ControlPanel = () => {
   const gemsRemaining = GAME_CONFIG.GRID_SIZE - minesCount;
 
   return (
-    <div className="w-full md:w-[320px] shrink-0 p-6 bg-game-panel rounded-2xl shadow-xl flex flex-col gap-6">
+    <div className="w-full lg:flex-1 p-6 bg-game-panel rounded-2xl shadow-xl flex flex-col gap-6">
       <BetInput
         amount={betAmount}
         balance={balance}

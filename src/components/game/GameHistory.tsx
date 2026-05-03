@@ -9,7 +9,7 @@ interface GameHistoryProps {
 
 export const GameHistory = ({ history, isLoading }: GameHistoryProps) => {
   return (
-    <div className="w-full md:w-[320px] h-150 shrink-0 p-6 bg-game-panel rounded-2xl shadow-xl flex flex-col">
+    <div className="w-full lg:flex-1 h-150 p-6 bg-game-panel rounded-2xl shadow-xl flex flex-col">
       <h2 className="text-white text-sm font-bold tracking-wider mb-6 uppercase">
         {UI_LABELS.HISTORY.TITLE}
       </h2>

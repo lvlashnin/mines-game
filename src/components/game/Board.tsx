@@ -1,4 +1,4 @@
-import { Cell } from "./Cell";
+import { Cell } from "../ui/Cell";
 import { useBoard } from "../../hooks/useBoard";
 import { useGameEngine } from "../../hooks/useGameEngine";
 import { GAME_STATUS } from "../../constants/game";
