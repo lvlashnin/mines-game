@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { useGameStore } from "../../store/useGameStore";
 import { useShallow } from "zustand/shallow";
-import { BET_UI } from "../../constants";
+import { BET_UI, PANEL_TEXTS } from "../../constants";
 import { GameButton } from "./GameButton";
 
 interface BetInputProps {
@@ -57,6 +57,19 @@ export const BetInput = ({
           className="bg-transparent text-white font-mono text-lg outline-none w-full disabled:opacity-50"
         />
         <span className="text-gray-500 font-mono">$</span>
+      </div>
+
+      <div className="hidden sm:grid lg:hidden grid-cols-4 gap-2">
+        {PANEL_TEXTS.QUICK_BET_AMOUNTS.map((amt) => (
+          <GameButton
+            key={amt}
+            onClick={() => onChange(amt > balance ? balance : amt)}
+            disabled={isDisabled}
+            className="py-1 text-xs border border-transparent hover:border-blue-500 hover:border"
+          >
+            {amt}
+          </GameButton>
+        ))}
       </div>
       <div className="flex gap-2 h-10">
         <GameButton
