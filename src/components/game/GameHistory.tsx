@@ -15,7 +15,11 @@ export const GameHistory = ({ history, isLoading }: GameHistoryProps) => {
       </h2>
 
       <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-x-hidden overflow-y-hidden lg:overflow-y-auto pb-4 lg:pb-0 lg:pr-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {history?.length > 0 ? (
+        {isLoading ? (
+          <div className="text-gray-500 text-sm text-center mt-2 lg:mt-10">
+            Loading history...
+          </div>
+        ) : history?.length > 0 ? (
           history.map((item) => <HistoryCard key={item.id} item={item} />)
         ) : (
           <div className="text-gray-500 text-sm text-center mt-2 lg:mt-10">

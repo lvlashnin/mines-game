@@ -36,7 +36,7 @@ function App() {
           </div>
 
           <div className="w-full lg:flex-1 order-1 lg:order-3">
-            <GameHistory history={historyData} isLoading={isHistoryLoading} />
+            <GameHistory history={historyData || []} isLoading={isHistoryLoading} />
           </div>
 
           <MobileGameButton />

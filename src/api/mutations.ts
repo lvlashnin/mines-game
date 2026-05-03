@@ -76,10 +76,16 @@ export const useCashOutMutation = () => {
       return data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(QUERY_KEYS.activeGame, (oldState) => ({
-        ...oldState,
-        ...data,
-      }));
+      queryClient.setQueryData<GameStateResponse | undefined>(
+        QUERY_KEYS.activeGame,
+        (oldState) => {
+          if (!oldState) return undefined;
+          return {
+            ...oldState,
+            ...data,
+          };
+        },
+      );
 
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balance });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.history });

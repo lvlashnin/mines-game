@@ -8,7 +8,7 @@ interface BetInputProps {
   amount: number;
   balance: number;
   isDisabled: boolean;
-  onChange: (amount: number | string) => void;
+  onChange: (amount: number) => void;
 }
 
 export const BetInput = ({
@@ -29,7 +29,7 @@ export const BetInput = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    if (val === "") return onChange("");
+    if (val === "") return onChange(0);
 
     const num = Number(val);
     if (!isNaN(num) && num >= 0) {

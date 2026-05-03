@@ -65,17 +65,17 @@ export interface RevealRequest {
 }
 
 export interface RevealGemResponse {
-  result: string;
+  result: "gem";
   currentMultiplier: number;
   revealedCells: RevealedCell[];
-  status: string;
+  status: GameStatus;
   gemsFound: number;
   nextMultiplier: number | null;
 }
 
 export interface RevealMineResponse {
-  result: string;
-  status: string;
+  result: "mine";
+  status: GameStatus;
   revealedCell: RevealedCell;
   fullBoard: FullBoard;
   balance: number;
@@ -84,7 +84,7 @@ export interface RevealMineResponse {
 export type RevealResponse = RevealGemResponse | RevealMineResponse;
 
 export interface CashoutResponse {
-  status: string;
+  status: GameStatus;
   cashedOutMultiplier: number;
   winAmount: number;
   profit: number;
