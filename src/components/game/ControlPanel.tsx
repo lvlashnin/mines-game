@@ -98,7 +98,7 @@ export const ControlPanel = () => {
         </div>
       )}
 
-      <div className="sticky bottom-0 z-20 mt-auto pt-4 pb-2 bg-game-panel rounded-b-2xl">
+      <div className="hidden lg:block sticky bottom-0 z-20 mt-auto pt-4 pb-2 bg-game-panel rounded-b-2xl">
         {isActive ? (
           <GameButton
             variant="success"

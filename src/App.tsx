@@ -7,6 +7,7 @@ import {
 import { Board } from "./components/game/Board";
 import { ControlPanel } from "./components/game/ControlPanel";
 import { GameHistory } from "./components/game/GameHistory";
+import { MobileGameButton } from "./components/game/MobileGameButton";
 import { InitialLoader } from "./components/ui/InitialLoader";
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
       </AnimatePresence>
 
       <div className="min-h-screen w-full bg-game-bg p-4 md:p-8 flex items-center justify-center">
-        <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-8 xl:gap-16 items-center lg:items-start justify-center">
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-8 xl:gap-16 items-center lg:items-start justify-center relative">
           <div className="w-full lg:flex-1 order-2 lg:order-1">
             <ControlPanel />
           </div>
@@ -34,6 +35,8 @@ function App() {
           <div className="w-full lg:flex-1 order-1 lg:order-3">
             <GameHistory history={historyData} isLoading={isHistoryLoading} />
           </div>
+
+          <MobileGameButton />
         </div>
       </div>
     </>

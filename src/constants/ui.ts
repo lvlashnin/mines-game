@@ -18,6 +18,7 @@ export const PANEL_TEXTS = {
     PROFIT: "Profit",
     GEMS: "Gems Found",
   },
+  QUICK_BET_AMOUNTS: [10, 25, 50, 100, 250, 500, 1000, 2500],
 } as const;
 
 export const UI_LABELS = {
