@@ -9,8 +9,11 @@ import {
 import { GAME_STATUS } from "../constants/game";
 import type { UseGameEngineReturn } from "../types";
 import { useIsMutating } from "@tanstack/react-query";
+import { useGameSounds } from "./useGameSounds";
+import { calculatePotentialProfit, calculateWinAmount } from "../utils/bet";
 
 export const useGameEngine = (): UseGameEngineReturn => {
+  const { playWin, playLose } = useGameSounds();
   const betAmount = useGameStore((state) => state.betAmount);
   const minesCount = useGameStore((state) => state.minesCount);
 
@@ -40,13 +43,12 @@ export const useGameEngine = (): UseGameEngineReturn => {
 
   const potentialProfit =
     isWinOrActive && activeGame
-      ? activeGame.betAmount * activeGame.currentMultiplier -
-        activeGame.betAmount
+      ? calculatePotentialProfit(activeGame.betAmount, activeGame.currentMultiplier)
       : 0;
 
   const currentWinAmount =
     isWinOrActive && activeGame
-      ? activeGame.betAmount * activeGame.currentMultiplier
+      ? calculateWinAmount(activeGame.betAmount, activeGame.currentMultiplier)
       : 0;
 
   const handleStartGame = () => {
@@ -65,13 +67,31 @@ export const useGameEngine = (): UseGameEngineReturn => {
 
     if (isAlreadyRevealed) return;
 
-    revealCell.mutate({ gameId: activeGame.gameId, row, col });
+    revealCell.mutate(
+      { gameId: activeGame.gameId, row, col },
+      {
+        onSuccess: (data) => {
+          if (data.status === GAME_STATUS.LOST) {
+            playLose();
+          } else if (data.status === GAME_STATUS.WON) {
+            playWin();
+          }
+        },
+      },
+    );
   };
 
   const handleCashOut = () => {
     if (!isActive || isProcessing || !activeGame || activeGame.gemsFound === 0)
       return;
-    cashOut.mutate({ gameId: activeGame.gameId });
+    cashOut.mutate(
+      { gameId: activeGame.gameId },
+      {
+        onSuccess: () => {
+          playWin();
+        },
+      },
+    );
   };
 
   return {

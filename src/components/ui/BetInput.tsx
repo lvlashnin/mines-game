@@ -3,6 +3,7 @@ import { useGameStore } from "../../store/useGameStore";
 import { useShallow } from "zustand/shallow";
 import { BET_UI, PANEL_TEXTS } from "../../constants";
 import { GameButton } from "./GameButton";
+import { clampBetAmount } from "../../utils/bet";
 
 interface BetInputProps {
   amount: number;
@@ -33,7 +34,7 @@ export const BetInput = ({
 
     const num = Number(val);
     if (!isNaN(num) && num >= 0) {
-      onChange(num > balance ? balance : num);
+      onChange(clampBetAmount(num, balance));
     }
   };
 
@@ -63,7 +64,7 @@ export const BetInput = ({
         {PANEL_TEXTS.QUICK_BET_AMOUNTS.map((amt) => (
           <GameButton
             key={amt}
-            onClick={() => onChange(amt > balance ? balance : amt)}
+            onClick={() => onChange(clampBetAmount(amt, balance))}
             disabled={isDisabled}
             className="py-1 text-xs border border-transparent hover:border-blue-500 hover:border"
           >

@@ -1,6 +1,7 @@
 import type { GameHistoryItem } from "../../types";
 import { cn } from "../../utils/cn";
 import { UI_LABELS, HISTORY_OUTCOME } from "../../constants/ui";
+import { formatCurrency, formatMultiplier } from "../../utils/format";
 
 interface HistoryCardProps {
   item: GameHistoryItem;
@@ -12,10 +13,10 @@ export const HistoryCard = ({ item }: HistoryCardProps) => {
   return (
     <div className="bg-game-bg rounded-xl p-4 flex flex-col gap-3 shrink-0">
       <div className="flex justify-between items-center text-sm font-mono">
-        <span className="text-gray-400">${item.betAmount.toFixed(2)}</span>
+        <span className="text-gray-400">{formatCurrency(item.betAmount)}</span>
         {isWin ? (
           <span className="text-game-gem font-bold">
-            {item.multiplier?.toFixed(2)}×
+            {item.multiplier ? formatMultiplier(item.multiplier) : ""}
           </span>
         ) : (
           <span className="text-xl leading-none">💣</span>
@@ -32,9 +33,7 @@ export const HistoryCard = ({ item }: HistoryCardProps) => {
             isWin ? "text-game-gem" : "text-game-mine",
           )}
         >
-          {item.profit > 0
-            ? `+$${item.profit.toFixed(2)}`
-            : `-$${Math.abs(+item.profit.toFixed(2))}`}
+          {formatCurrency(item.profit, { showSign: true })}
         </span>
       </div>
     </div>

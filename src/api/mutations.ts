@@ -11,6 +11,17 @@ import type {
   GameStateResponse,
 } from "../types";
 
+const mergeGameState = (
+  oldState: GameStateResponse | undefined,
+  newData: Partial<GameStateResponse>,
+): GameStateResponse | undefined => {
+  if (!oldState) return undefined;
+  return {
+    ...oldState,
+    ...newData,
+  };
+};
+
 export const useCreateGameMutation = () => {
   const queryClient = useQueryClient();
 
@@ -49,13 +60,7 @@ export const useRevealCellMutation = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<GameStateResponse | undefined>(
         QUERY_KEYS.activeGame,
-        (oldState) => {
-          if (!oldState) return undefined;
-          return {
-            ...oldState,
-            ...data,
-          };
-        },
+        (oldState) => mergeGameState(oldState, data),
       );
       if (data.status === GAME_STATUS.LOST) {
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balance });
@@ -78,13 +83,7 @@ export const useCashOutMutation = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<GameStateResponse | undefined>(
         QUERY_KEYS.activeGame,
-        (oldState) => {
-          if (!oldState) return undefined;
-          return {
-            ...oldState,
-            ...data,
-          };
-        },
+        (oldState) => mergeGameState(oldState, data),
       );
 
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balance });

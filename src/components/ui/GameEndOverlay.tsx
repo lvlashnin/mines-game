@@ -1,5 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { GAME_STATUS } from "../../constants";
+import { formatCurrency, formatMultiplier } from "../../utils/format";
 
 interface GameEndOverlayProps {
   status: string;
@@ -62,19 +63,19 @@ export const GameEndOverlay = ({
 
             {multiplier && (
               <span className="text-green-500 text-4xl font-black mb-2">
-                {multiplier}×
+                {formatMultiplier(multiplier)}
               </span>
             )}
 
             {winAmount !== undefined && (
               <span className="text-white text-xl font-bold mb-1">
-                ${winAmount.toFixed(2)}
+                {formatCurrency(winAmount)}
               </span>
             )}
 
             {profit !== undefined && (
               <span className="text-green-500 text-sm font-medium mb-6">
-                +${profit.toFixed(2)} profit
+                {formatCurrency(profit, { showSign: true })} profit
               </span>
             )}
 
@@ -94,7 +95,7 @@ export const GameEndOverlay = ({
 
             {betAmount !== undefined && (
               <span className="text-red-500 font-bold text-lg mb-8">
-                ${betAmount.toFixed(2)} lost
+                {formatCurrency(betAmount)} lost
               </span>
             )}
 

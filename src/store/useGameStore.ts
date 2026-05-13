@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { GameStore, MinesCount } from "../types";
 import { GAME_CONFIG } from "../constants/game";
+import { clampBetAmount } from "../utils/bet";
 
 export const useGameStore = create<GameStore>((set, get) => ({
   betAmount: GAME_CONFIG.DEFAULT_BET,
@@ -20,11 +21,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }),
   halfBet: () => {
     const { betAmount } = get();
-    set({ betAmount: Math.max(0, Math.floor(betAmount / 2)) });
+    set({ betAmount: clampBetAmount(Math.floor(betAmount / 2), Infinity) });
   },
   doubleBet: (currentBalance: number) => {
     const { betAmount } = get();
-    set({ betAmount: Math.min(betAmount * 2, currentBalance) });
+    set({ betAmount: clampBetAmount(betAmount * 2, currentBalance) });
   },
 
   maxBet: (currentBalance) => {

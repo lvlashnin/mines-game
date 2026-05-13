@@ -1,4 +1,4 @@
-import type { MinesCount } from "./api";
+import type { MinesCount } from "./game";
 
 export interface GameState {
   betAmount: number;

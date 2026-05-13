@@ -3,6 +3,7 @@ import { useGameEngine } from "../../hooks/useGameEngine";
 import { useGameStore } from "../../store/useGameStore";
 import { useBalanceQuery } from "../../api/queries";
 import { cn } from "../../utils/cn";
+import { formatCurrency, formatMultiplier } from "../../utils/format";
 import { BetInput } from "../ui/BetInput";
 import { GameButton } from "../ui/GameButton";
 import { GAME_CONFIG } from "../../constants/game";
@@ -37,7 +38,7 @@ export const ControlPanel = () => {
           <span role="img" aria-label="balance icon">
             💰
           </span>
-          ${balance.toFixed(2)}
+          {formatCurrency(balance)}
         </span>
       </div>
 
@@ -83,12 +84,12 @@ export const ControlPanel = () => {
         <div className="flex flex-col gap-3 py-4 border-t border-b border-game-border mt-2 font-mono text-sm">
           <StatRow
             label={PANEL_TEXTS.STATS.MULTIPLIER}
-            value={`${metrics.currentMultiplier.toFixed(2)}×`}
+            value={formatMultiplier(metrics.currentMultiplier)}
             valueClass="text-game-button"
           />
           <StatRow
             label={PANEL_TEXTS.STATS.PROFIT}
-            value={`+$${metrics.potentialProfit.toFixed(2)}`}
+            value={formatCurrency(metrics.potentialProfit, { showSign: true })}
             valueClass="text-game-button"
           />
           <StatRow
@@ -106,7 +107,7 @@ export const ControlPanel = () => {
             disabled={isProcessing || gameState?.gemsFound === 0}
             className="w-full py-4 shadow-lg"
           >
-            {PANEL_TEXTS.CASH_OUT} — ${metrics.currentWinAmount.toFixed(2)}
+            {PANEL_TEXTS.CASH_OUT} — {formatCurrency(metrics.currentWinAmount)}
           </GameButton>
         ) : (
           <GameButton
