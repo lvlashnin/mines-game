@@ -1,10 +1,6 @@
 import { GAME_CONFIG, GAME_STATUS, UI_CELL_STATE } from "../constants/game";
 import type { GameStateResponse, UICellState } from "../types";
 
-/**
- * Generates the 2D grid for UI display based on the current server GameState.
- * Maps revealed cells, mine hits, or reveals full board upon game-over state.
- */
 export const generateBoardGrid = (
   gameState?: GameStateResponse | null,
 ): UICellState[][] => {

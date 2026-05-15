@@ -31,17 +31,13 @@ export const Board = () => {
             key="game-end"
             status={gameState.status as "won" | "lost"}
             multiplier={
-              gameState.status === GAME_STATUS.WON
-                ? currentMultiplier
-                : undefined
+              gameState.status === GAME_STATUS.WON && currentMultiplier
             }
             winAmount={
-              gameState.status === GAME_STATUS.WON
-                ? currentWinAmount
-                : undefined
+              gameState.status === GAME_STATUS.WON && currentWinAmount
             }
             profit={
-              gameState.status === GAME_STATUS.WON ? potentialProfit : undefined
+              gameState.status === GAME_STATUS.WON && potentialProfit
             }
             betAmount={gameState.betAmount}
             onRestart={actions.handleReset}
