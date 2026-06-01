@@ -1,6 +1,5 @@
 import { Cell } from "../ui/Cell";
 import { useBoard } from "../../hooks/useBoard";
-import { GAME_STATUS } from "../../constants/game";
 import { AnimatePresence, motion } from "framer-motion";
 import { LoadingOverlay } from "../ui/LoadingOverlay";
 import { GameEndOverlay } from "../ui/GameEndOverlay";
@@ -30,15 +29,9 @@ export const Board = () => {
           <GameEndOverlay
             key="game-end"
             status={gameState.status as "won" | "lost"}
-            multiplier={
-              gameState.status === GAME_STATUS.WON && currentMultiplier
-            }
-            winAmount={
-              gameState.status === GAME_STATUS.WON && currentWinAmount
-            }
-            profit={
-              gameState.status === GAME_STATUS.WON && potentialProfit
-            }
+            multiplier={currentMultiplier}
+            winAmount={currentWinAmount}
+            profit={potentialProfit}
             betAmount={gameState.betAmount}
             onRestart={actions.handleReset}
           />
